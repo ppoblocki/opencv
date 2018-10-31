@@ -23,23 +23,28 @@ int main(int argc, char** argv)
 	Mat dist = imread("MiI-MapaG³êbokoœci.png");
 	Mat ball = imread("MiI-Obszar.png");
 
-	int nBallPixels = 0;
+	double avgDist = 0;
+	int nDist = 0;
+
 	for (int i = 0; i < ball.rows; i++) {
 		for (int j = 0; j < ball.cols; j++) {
-			if (ball.at<Vec3b>(i, j) == Vec3b(255, 255, 255))
-				nBallPixels++;
+			Vec3b ballPx = ball.at<Vec3b>(i, j);
+			uchar distPx = dist.at<uchar>(i, j);
+
+			// Skip pixels not in ball.
+			if (ballPx != Vec3b(255, 255, 255))
+				continue;
+			
+			avgDist += distPx;
+			nDist++;
 		}
 	}
 
-	double avgDist;
-	std::ifstream in("MiI-SredniaOdleglosc.txt");
-	in >> avgDist;
-	in.close();
+	avgDist /= nDist;
 
-	double diameterPx = 2 * sqrt((double)nBallPixels / 3.141592);
-	double diameterCm = 0.001 * avgDist * diameterPx;
-
-	std::cout << diameterCm << std::endl;
+	std::ofstream out("MiI-SredniaOdleglosc.txt");
+	out << avgDist;
+	out.close();
 
 	return 0;
 }
