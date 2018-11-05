@@ -7,3 +7,5 @@
 [2.1] + [2.2] Odpalić contour.cpp
 
 [3.1] Odpalić depth.cpp
+
+[4.1] Opalić avg-dist.cpp
